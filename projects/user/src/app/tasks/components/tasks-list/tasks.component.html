@@ -1,0 +1,87 @@
+<header class="mt-3">
+  <mat-form-field appearance="outline">
+    <mat-label>{{ "TasksHome.statusInput" | translate }}</mat-label>
+    <mat-select
+      #statusSelect
+      placeholder="{{ 'TasksHome.statusInputPlac' | translate }}"
+      (selectionChange)="filterData($event, 'status')"
+      [(value)]="selectedStatus"
+    >
+      <mat-option value="Complete">
+        {{ "TasksHome.Complete" | translate }}
+      </mat-option>
+      <mat-option value="In-Progress">
+        {{ "TasksHome.InProgress" | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</header>
+<section>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+    <div
+      class="col"
+      *ngFor="
+        let task of tasksUser
+          | paginate
+            : {
+                id: '_id',
+                itemsPerPage: 10,
+                currentPage: page,
+                totalItems: total
+              };
+        index as index
+      "
+    >
+      <div class="card shadow">
+        <figure class="ratio ratio-4x3">
+          <img
+            fill
+            appErrorhandle
+            [ngSrc]="'https://crud-eywd.onrender.com/' + task.image"
+            class="card-img-top"
+            [alt]="task.title"
+          />
+        </figure>
+
+        <figcaption class="card-body">
+          <div class="card-title">
+            <h3 class="card-title text-danger-emphasis">
+              {{ task.title | titlecase }}
+            </h3>
+            <h4 class="card-subtitle h6">
+              {{ "TasksHome.tableDeadLine" | translate }} {{ task.deadline }}
+            </h4>
+            <p class="card-text small text-body-secondary">
+              {{ task.description.split(" ", 10).join(" ") }}
+            </p>
+          </div>
+        </figcaption>
+
+        <footer class="card-footer justify-content-center hstack gap-2">
+          <a mat-raised-button [routerLink]="['./', task._id]">
+            {{ "TasksHome.Details" | translate }}
+          </a>
+          <button
+            *ngIf="task.status !== 'Complete'"
+            mat-raised-button
+            color="warn"
+            (click)="completeTask(task._id, index)"
+          >
+            {{ "TasksHome.CompleteBtn" | translate }}
+          </button>
+
+          <span *ngIf="task.status === 'Complete'" class="badge text-bg-danger">
+            {{ "TasksHome.completed" | translate }}</span
+          >
+        </footer>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="hstack justify-content-center mt-4">
+  <pagination-controls
+    *ngIf="tasksUser.length"
+    id="_id"
+    (pageChange)="page = $event"
+  ></pagination-controls>
+</footer>

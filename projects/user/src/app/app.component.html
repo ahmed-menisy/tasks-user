@@ -1,0 +1,37 @@
+<div
+  class="position-fixed bottom-0 m-3 bg-white"
+  style="z-index: 99"
+  [class]="direction === 'ltr' ? 'start-0' : 'end-0'"
+>
+  <mat-button-toggle-group
+    appearance="legacy"
+    name="fontStyle"
+    aria-label="Font Style"
+  >
+    <mat-button-toggle
+      [checked]="lang === 'ar'"
+      (change)="setLanguage($event.value)"
+      value="ar"
+      >{{ "Genral.ar" | translate }}</mat-button-toggle
+    >
+
+    <mat-button-toggle
+      (change)="setLanguage($event.value)"
+      [checked]="lang === 'en'"
+      value="en"
+      >{{ "Genral.en" | translate }}</mat-button-toggle
+    >
+  </mat-button-toggle-group>
+</div>
+
+<router-outlet></router-outlet>
+<ngx-spinner
+  bdColor="rgba(255 255 255 / .5)"
+  size="large"
+  color="rgb(17, 64, 117)"
+  type="ball-running-dots"
+  [fullScreen]="true"
+  ><p style="color: rgb(17, 64, 117)">
+    {{ "Genral.Loading" | translate }}...
+  </p></ngx-spinner
+>

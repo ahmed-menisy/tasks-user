@@ -1,0 +1,109 @@
+<section class="bg-white p-3 rounded-2 shadow">
+  <header class="hstack justify-content-between">
+    <h1 mat-dialog-title>{{ "Tasks.addTask" | translate }}</h1>
+
+    <button mat-button (click)="onNoClick()">
+      <i class="fas fa-close fa-xl"></i>
+    </button>
+  </header>
+
+  <form
+    mat-dialog-content
+    [formGroup]="formTask"
+    (ngSubmit)="createTask(formTask)"
+  >
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>{{ "Tasks.title" | translate }}</mat-label>
+      <input
+        matInput
+        placeholder="{{ 'Tasks.titleInput' | translate }}"
+        [formControlName]="fileds.title"
+      />
+      <mat-error *ngIf="formTask.get(fileds.title)?.hasError('required')">{{
+        "Tasks.titleErrorReq" | translate
+      }}</mat-error>
+      <mat-error *ngIf="formTask.get(fileds.title)?.hasError('minlength')">{{
+        "Tasks.titleErrorMin" | translate
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>{{ "Tasks.user" | translate }}</mat-label>
+      <mat-select
+        placeholder="{{ 'Tasks.userInput' | translate }}"
+        [formControlName]="fileds.userId"
+      >
+        <mat-option *ngFor="let option of users" [value]="option._id">
+          {{ option.username }}
+        </mat-option>
+      </mat-select>
+      <mat-hint class="text-danger-emphasis" *ngIf="userExite"
+        >{{ "Tasks.userLoadin" | translate }}
+        <i class="fas fa-spinner fa-spin"></i
+      ></mat-hint>
+      <mat-error>{{ "Tasks.userErrorReq" | translate }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>{{ "Tasks.deadline" | translate }}</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        [formControlName]="fileds.deadline"
+      />
+      <mat-hint>{{ "Tasks.deadlineStyle" | translate }}</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error>{{ "Tasks.deadlineErrorReq" | translate }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100 mt-3">
+      <mat-label>{{ "Tasks.description" | translate }}</mat-label>
+      <textarea
+        matInput
+        placeholder="{{ 'Tasks.descriptionInput' | translate }}..."
+        [formControlName]="fileds.description"
+      ></textarea>
+      <mat-error>{{ "Tasks.descriptionErrorReq" | translate }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <ngx-mat-file-input
+        placeholder="{{ 'Tasks.image' | translate }}"
+        [formControlName]="fileds.image"
+        accept="image/*"
+      >
+        <mat-icon ngxMatFileInputIcon color="primary">folder</mat-icon>
+      </ngx-mat-file-input>
+      <mat-error>{{ "Tasks.imageErrorReq" | translate }}</mat-error>
+    </mat-form-field>
+
+    <div class="hstack gap-2 mt-4">
+      <button
+        *ngIf="!data"
+        type="submit"
+        [disabled]="formTask.invalid"
+        mat-flat-button
+        color="primary"
+      >
+        {{ "Tasks.buttonCreate" | translate }}
+      </button>
+
+      <button
+        *ngIf="data"
+        type="submit"
+        [disabled]="formTask.invalid"
+        mat-flat-button
+        color="accent"
+      >
+        {{ "Tasks.buttonUpdate" | translate }}
+      </button>
+      <button type="button" mat-flat-button color="warn" (click)="onNoClick()">
+        {{ "Tasks.buttonClose" | translate }}
+      </button>
+    </div>
+  </form>
+</section>

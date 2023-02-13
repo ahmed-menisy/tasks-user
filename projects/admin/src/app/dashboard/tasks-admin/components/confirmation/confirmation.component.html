@@ -1,0 +1,15 @@
+<section class="shadow rounded-2 p-3">
+  <header>
+    <h2 class="text-center h3">
+      {{ "confirm.title" | translate }}
+    </h2>
+  </header>
+  <footer class="hstack gap-2 justify-content-center border-top pt-2">
+    <button mat-raised-button color="primary" (click)="confirm()">
+      {{ "confirm.con" | translate }}
+    </button>
+    <button mat-raised-button color="warn" (click)="close()">
+      {{ "confirm.no" | translate }}
+    </button>
+  </footer>
+</section>

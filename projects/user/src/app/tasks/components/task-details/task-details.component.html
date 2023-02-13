@@ -1,0 +1,58 @@
+<div class="row align-items-center g-3 py-5">
+  <div class="col-md-6">
+    <figure class="ratio ratio-1x1">
+      <a
+        [href]="'https://crud-eywd.onrender.com/' + task.image"
+        download="task"
+        rel="noopener noreferrer nofollow"
+        target="_blank"
+      >
+        <img
+          *ngIf="task.image"
+          fill
+          appErrorhandle
+          [ngSrc]="'https://crud-eywd.onrender.com/' + task.image"
+          class="w-100"
+          [alt]="task.title"
+        />
+      </a>
+    </figure>
+  </div>
+  <div class="col-md-6">
+    <figcaption class="px-3" *ngIf="task.title">
+      <h2 class="text-danger-emphasis">{{ task.title | titlecase }}</h2>
+      <div class="small">
+        <h3 class="h6">
+          {{ "TasksHome.tableDeadLine" | translate }} : {{ task.deadline }}
+        </h3>
+        <h3 class="h6">
+          {{ "TaskDetails.creatAt" | translate }}: {{ task.createdAt }}
+        </h3>
+        <h3 class="h6">
+          {{ "TaskDetails.updatedAt" | translate }}: {{ task.updatedAt }}
+        </h3>
+        <p class="text-body-secondary mt-3">
+          {{ "TaskDetails.Description" | translate }}: {{ task.description }}
+        </p>
+        <span>{{ "TasksHome.statusInput" | translate }}:</span>
+        <span class="badge text-bg-danger">
+          {{
+            task.status === "In-Progress"
+              ? ("TasksHome.InProgress" | translate)
+              : ("TasksHome.Complete" | translate)
+          }}</span
+        >
+        <div class="mt-4">
+          <button
+            *ngIf="task.status !== 'Complete'"
+            mat-raised-button
+            color="warn"
+            (click)="completeTask(task._id)"
+          >
+            {{ "TasksHome.CompleteBtn" | translate }}
+          </button>
+        </div>
+      </div>
+    </figcaption>
+  </div>
+</div>

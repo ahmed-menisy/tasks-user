@@ -1,0 +1,11 @@
+:host ::ng-deep {
+  .mat-button-toggle-label-content {
+    font-size: 12px;
+    padding-inline: 8px;
+    line-height: 1em;
+  }
+  .mat-button-toggle-checked {
+    background-color: #09cc;
+    color: #fff;
+  }
+}

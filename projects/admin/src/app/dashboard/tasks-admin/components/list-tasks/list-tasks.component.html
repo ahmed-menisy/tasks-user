@@ -1,0 +1,224 @@
+<section class="mt-2">
+  <button mat-raised-button color="primary" (click)="addTask()" type="button">
+    {{ "TasksHome.title" | translate }}
+  </button>
+
+  <div class="mt-3">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3">
+      <div class="col">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>{{ "TasksHome.searchInput" | translate }}</mat-label>
+          <input
+            matInput
+            (input)="filterData($event, 'keyword')"
+            placeholder="{{ 'TasksHome.searchInputPlac' | translate }}"
+            #input
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>{{ "TasksHome.userInput" | translate }}</mat-label>
+          <mat-select
+            #selectUser
+            placeholder="{{ 'TasksHome.userInputPlac' | translate }} ..."
+            (selectionChange)="filterData($event, 'userId')"
+          >
+            <mat-option value="">
+              {{ "TasksHome.all" | translate }}
+            </mat-option>
+            <mat-option *ngFor="let user of users" [value]="user._id">
+              {{ user.username }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>{{ "TasksHome.statusInput" | translate }}</mat-label>
+          <mat-select
+            #statusSelect
+            placeholder="{{ 'TasksHome.statusInputPlac' | translate }}..."
+            (selectionChange)="filterData($event, 'status')"
+          >
+            <mat-option value="">
+              {{ "TasksHome.all" | translate }}
+            </mat-option>
+            <mat-option value="Complete">
+              {{ "TasksHome.Complete" | translate }}
+            </mat-option>
+            <mat-option value="In-Progress">
+              {{ "TasksHome.InProgress" | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>{{ "TasksHome.dateInput" | translate }}</mat-label>
+          <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+            <input
+              matStartDate
+              formControlName="start"
+              placeholder="{{ 'TasksHome.dateInputPlacS' | translate }}"
+              (dateChange)="filterDate($event, 'fromDate')"
+              #dataStart
+            />
+            <input
+              matEndDate
+              formControlName="end"
+              placeholder="{{ 'TasksHome.dateInputPlacE' | translate }}"
+              (dateChange)="filterDate($event, 'toDate')"
+              #dataEnd
+            />
+          </mat-date-range-input>
+          <mat-hint>{{ "TasksHome.dateInputPlacHint" | translate }}</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+
+          <mat-error
+            *ngIf="range.controls.start.hasError('matStartDateInvalid')"
+            >{{ "TasksHome.dateInputPlacErrorStart" | translate }}</mat-error
+          >
+          <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">{{
+            "TasksHome.dateInputPlacErrorEnd" | translate
+          }}</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="table-responsive shadow rounded">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        class="mat-elevation-z8 text-nowrap"
+      >
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "TasksHome.tableNo" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element; index as index">
+            {{ index + 1 }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="image">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <img
+              width="140"
+              height="120"
+              [ngSrc]="'https://crud-eywd.onrender.com/' + element.image"
+              [alt]="element.title"
+              class="object-fit-cover"
+              #imgElemnt
+              (error)="handleErrorImage(imgElemnt)"
+            />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "TasksHome.tableTitle" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="user">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "TasksHome.tableUser" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.user }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="deadline">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "TasksHome.tableDeadLine" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.deadline }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "TasksHome.tableStatus" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              element.status === "In-Progress"
+                ? ("TasksHome.InProgress" | translate)
+                : ("TasksHome.Complete" | translate)
+            }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element; index as index">
+            <div class="hstack gap-2">
+              <swal
+                #deleteSwal
+                title="{{ 'confirm.delete' | translate }} {{ element.title }}?"
+                confirmButtonText="{{ 'confirm.ok' | translate }}"
+                etc
+              ></swal>
+              <button
+                class="btn btn-sm btn-outline-danger"
+                (confirm)="deleteTask(element._id, index)"
+                [swal]="deleteSwal"
+              >
+                {{ "TasksHome.tableDelete" | translate }}
+              </button>
+              <button
+                class="btn btn-sm btn-outline-warning"
+                (click)="updateData(element)"
+              >
+                {{ "TasksHome.tableUpdate" | translate }}
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="
+            let row;
+            columns: displayedColumns
+              | paginate
+                : {
+                    id: 'foo',
+                    itemsPerPage: 10,
+                    currentPage: page,
+                    totalItems: total
+                  }
+          "
+        ></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">
+            {{ "TasksHome.paginationHint" | translate }} "{{ input.value }}
+            {{ selectUser.value }} {{ statusSelect.value }}
+            {{ dataStart.value }} {{ dataEnd.value }}"
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <footer class="hstack justify-content-center mt-2">
+      <pagination-controls
+        *ngIf="dataSource.data.length"
+        id="foo"
+        nextLabel="{{ 'TasksHome.paginationNext' | translate }}"
+        previousLabel="{{ 'TasksHome.paginationPrevious' | translate }}"
+        (pageChange)="changePagination($event)"
+      ></pagination-controls>
+    </footer>
+  </div>
+</section>

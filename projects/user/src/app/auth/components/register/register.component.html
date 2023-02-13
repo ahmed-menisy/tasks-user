@@ -1,0 +1,108 @@
+<section class="rounded shadow p-3 col-md-10 mx-auto">
+  <h1 class="text-center">{{ "Register.title" | translate }}</h1>
+
+  <form
+    class="mt-4 vstack gap-2"
+    [formGroup]="registeForm"
+    (ngSubmit)="register(registeForm)"
+  >
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>{{ "Register.userName" | translate }}</mat-label>
+      <input
+        type="text"
+        matInput
+        placeholder="{{ 'Register.userNamePlac' | translate }}"
+        [formControlName]="fildes.username"
+        [errorStateMatcher]="matcher"
+      />
+      <mat-error *ngIf="userRequired">{{
+        "Register.userNameErrorReq" | translate
+      }}</mat-error>
+      <mat-error *ngIf="userMin">{{
+        "Register.userNameErrorMin" | translate
+      }}</mat-error>
+      <mat-error *ngIf="userMax">{{
+        "Register.userNameErrorMax" | translate
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>{{ "Register.emailInput" | translate }}</mat-label>
+      <input
+        type="email"
+        matInput
+        placeholder="{{ 'Register.emailPlace' | translate }}"
+        [formControlName]="fildes.email"
+        [errorStateMatcher]="matcher"
+      />
+      <mat-error *ngIf="emailRequired">{{
+        "Register.emailErrorReq" | translate
+      }}</mat-error>
+      <mat-error *ngIf="emailFormat">{{
+        "Register.emailErrorInValid" | translate
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>{{ "Register.passInput" | translate }}</mat-label>
+      <input
+        [type]="hidePass ? 'password' : 'text'"
+        [formControlName]="fildes.password"
+        [errorStateMatcher]="matcher"
+        matInput
+        placeholder="{{ 'Register.passPlace' | translate }}"
+      />
+      <button
+        type="button"
+        mat-icon-button
+        matSuffix
+        (click)="hidePass = !hidePass"
+      >
+        <mat-icon>{{ hidePass ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
+      <mat-error *ngIf="passwordRequired">{{
+        "Register.passErrorReq" | translate
+      }}</mat-error>
+      <mat-error *ngIf="passwordMin"
+        >{{ "Register.passErrorMin" | translate }}
+      </mat-error>
+      <mat-error *ngIf="passwordMax">{{
+        "Register.passErrorMax" | translate
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>{{ "Register.conPassTitle" | translate }}</mat-label>
+      <input
+        [formControlName]="fildes.confirmPassword"
+        [errorStateMatcher]="matcher"
+        [type]="hidePassCon ? 'password' : 'text'"
+        matInput
+        placeholder="{{ 'Register.conPassPlace' | translate }}"
+      />
+      <button
+        type="button"
+        mat-icon-button
+        matSuffix
+        (click)="hidePassCon = !hidePassCon"
+      >
+        <mat-icon>{{ hidePassCon ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
+      <mat-error *ngIf="passwordConRequired">{{
+        "Register.conPassErrorReq" | translate
+      }}</mat-error>
+
+      <mat-hint *ngIf="passwordConfirm">{{
+        "Register.conPassErrorCon" | translate
+      }}</mat-hint>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" [disabled]="registeForm.invalid">
+      {{ "Register.button" | translate }}
+    </button>
+
+    <a class="link-primary mt-3 text-decoration-none" routerLink="/login">{{
+      "Register.hAccount" | translate
+    }}</a>
+  </form>
+</section>

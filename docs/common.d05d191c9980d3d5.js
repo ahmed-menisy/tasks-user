@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkuser=self.webpackChunkuser||[]).push([[592],{9472:(n,e,s)=>{s.d(e,{N:()=>u});const u={baseApi:"https://crud-eywd.onrender.com/"}}}]);

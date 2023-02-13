@@ -1,0 +1,34 @@
+:host {
+  ::ng-deep {
+    a {
+      text-decoration: none !important;
+    }
+
+    table {
+      thead {
+        tr {
+          position: sticky;
+          top: 0;
+          background-color: #09c;
+          th {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+
+  .table-responsive {
+    overflow: auto !important;
+    max-height: 60vh !important;
+  }
+
+  table {
+    img {
+      border: 1px solid #e6e3e3;
+      border-radius: 10px;
+      padding: 5px;
+      margin-block: 2px;
+    }
+  }
+}

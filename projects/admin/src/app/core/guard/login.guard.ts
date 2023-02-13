@@ -1,0 +1,55 @@
+import { Injectable } from '@angular/core';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  Router,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class LoginGuard implements CanActivate {
+  constructor(private _Router: Router) {}
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ):
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
+    const tokenUser = JSON.parse(localStorage.getItem('_uData')!);
+    if (tokenUser?.token) {
+      return true;
+    } else {
+      this._Router.navigate(['/login']);
+      return false;
+    }
+  }
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class NotLoginGuard implements CanActivate {
+  constructor(private _Router: Router) {}
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ):
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
+    const tokenUser = JSON.parse(localStorage.getItem('_uData')!);
+    if (tokenUser?.token) {
+      this._Router.navigate(['/tasks']);
+      return false;
+    } else {
+      return true;
+    }
+  }
+}

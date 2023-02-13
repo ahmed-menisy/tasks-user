@@ -1,0 +1,62 @@
+<section class="rounded shadow p-3 col-md-10 mx-auto">
+  <h1 class="text-center">{{ "Login.title" | translate }}</h1>
+
+  <form
+    class="mt-4 vstack gap-2"
+    [formGroup]="loginForm"
+    (ngSubmit)="logIn(loginForm)"
+  >
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>{{ "Login.emailInput" | translate }}</mat-label>
+      <input
+        type="email"
+        matInput
+        placeholder="{{ 'Login.emailPlace' | translate }}"
+        [formControlName]="fildes.email"
+        [errorStateMatcher]="matcher"
+      />
+      <mat-error *ngIf="emailRequired">{{
+        "Login.emailErrorReq" | translate
+      }}</mat-error>
+      <mat-error *ngIf="emailFormat">{{
+        "Login.emailErrorInValid" | translate
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>{{ "Login.passInput" | translate }}</mat-label>
+      <input
+        [type]="hidePass ? 'password' : 'text'"
+        [formControlName]="fildes.password"
+        [errorStateMatcher]="matcher"
+        matInput
+        placeholder="{{ 'Login.passPlace' | translate }}"
+      />
+      <button
+        type="button"
+        mat-icon-button
+        matSuffix
+        (click)="hidePass = !hidePass"
+      >
+        <mat-icon>{{ hidePass ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
+      <mat-error *ngIf="passwordRequired">{{
+        "Login.passErrorReq" | translate
+      }}</mat-error>
+      <mat-error *ngIf="passwordMin"
+        >{{ "Login.passErrorMin" | translate }}
+      </mat-error>
+      <mat-error *ngIf="passwordMax"
+        >{{ "Login.passErrorMax" | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" [disabled]="loginForm.invalid">
+      {{ "Login.title" | translate }}
+    </button>
+
+    <a class="link-primary mt-3 text-decoration-none" routerLink="/register">{{
+      "Login.nAccount" | translate
+    }}</a>
+  </form>
+</section>

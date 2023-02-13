@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&display=swap");
+@import "ngx-toastr/toastr";
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: "Roboto Mono", monospace;
+}
+input {
+  width: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #afafaf;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #09c;
+}

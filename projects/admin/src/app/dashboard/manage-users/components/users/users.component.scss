@@ -1,0 +1,17 @@
+:host {
+  ::ng-deep {
+    a {
+      text-decoration: none !important;
+    }
+    table {
+      thead {
+        tr {
+          background-color: #09c;
+          th {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}
